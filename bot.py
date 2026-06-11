@@ -541,7 +541,7 @@ async def send_reminder(app, meeting: dict, is_start: bool):
         tz = ZoneInfo(TIMEZONE)
         today = datetime.now(tz).weekday()  # 0=пн, 5=сб, 6=вс
         if today >= 5:
-            logger.info(f"Выходной день, пропускаем: {meeting[\'title\']}")
+            logger.info(f"Выходной день, пропускаем: {meeting['title']}")
             return
 
     data = load_data()
