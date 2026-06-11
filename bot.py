@@ -18,8 +18,8 @@ logger = logging.getLogger(__name__)
 # ─────────────────────────────────────────────
 #  ⚙️  НАСТРОЙКИ — ЗАПОЛНИ ЭТО ПЕРЕД ЗАПУСКОМ
 # ─────────────────────────────────────────────
-BOT_TOKEN = "ВАШ_ТОКЕН_ЗДЕСЬ"          # токен от @BotFather
-SUPER_ADMIN_ID = 123456789              # твой Telegram user_id (число)
+BOT_TOKEN = "8685100980:AAE4N7JmQQ8vdNPl6_Xqo8e1XQkU82zfWi4"          # токен от @BotFather
+SUPER_ADMIN_ID = 677456564              # твой Telegram user_id (число)
 TIMEZONE = "Asia/Tashkent"             # часовой пояс
 # ─────────────────────────────────────────────
 
