@@ -62,7 +62,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if not is_admin(user.id):
         await update.message.reply_text(
             "👋 Привет! Я бот для напоминания о встречах.\n"
-            "Ты кто брат?) У тебя нет прав для настройки"
+            "У тебя нет прав для настройки. Обратись к администратору."
         )
         return ConversationHandler.END
 
@@ -201,9 +201,12 @@ async def ask_who(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     if query.data == "who_all":
         context.user_data["mention_all"] = True
-        context.user_data["usernames"] = []
-        await query.edit_message_text("🔗 Введи ссылку на встречу (например https://meet.google.com/xxx)\nИли напиши «нет» если ссылки нет:")
-        return ASK_LINK
+        await query.edit_message_text(
+            "✏️ Напиши username всех участников через запятую или пробел.\n"
+            "Пример: @ivan, @maria, @alex\n\n"
+            "Бот тегнёт всех этих людей при каждом напоминании."
+        )
+        return ASK_USERNAMES
     else:
         context.user_data["mention_all"] = False
         await query.edit_message_text(
@@ -533,6 +536,14 @@ def build_reminder_message(meeting: dict, is_start: bool) -> str:
 
 
 async def send_reminder(app, meeting: dict, is_start: bool):
+    # Для ежедневных встреч — только пн-пт, пропускаем сб-вс
+    if meeting["type"] == "type_daily":
+        tz = ZoneInfo(TIMEZONE)
+        today = datetime.now(tz).weekday()  # 0=пн, 5=сб, 6=вс
+        if today >= 5:
+            logger.info(f"Выходной день, пропускаем: {meeting[\'title\']}")
+            return
+
     data = load_data()
     group_id = data.get("group_chat_id")
     if not group_id:
